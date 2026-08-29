@@ -1,4 +1,7 @@
 const express = require("express");
 const router = express.Router();
-router.get("/", (req, res) => res.json({ message: "summary route placeholder" }));
+const { getSummary } = require("../controllers/summary.controller");
+
+router.get("/:poNumber", getSummary);
+
 module.exports = router;

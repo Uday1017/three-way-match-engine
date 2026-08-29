@@ -1,4 +1,7 @@
 const express = require("express");
 const router = express.Router();
-router.get("/", (req, res) => res.json({ message: "match route placeholder" }));
+const { getMatch } = require("../controllers/match.controller");
+
+router.get("/:poNumber", getMatch);
+
 module.exports = router;

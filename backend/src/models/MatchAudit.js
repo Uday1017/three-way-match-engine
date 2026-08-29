@@ -1,34 +1,21 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const invoiceItemSchema = new mongoose.Schema(
+const stepSchema = new mongoose.Schema(
   {
-    itemCode: { type: String, trim: true, default: "" }, // Invoice's "FG-P-F-0503" scheme
-    description: { type: String, required: true, trim: true },
-    quantity: { type: Number, required: true, min: 0 },
-    unitRate: { type: Number, default: null }, // "Rate [INR]" — may be missing
-    mrp: { type: Number, default: null }, // often absent on invoice per our sample
-    skuMaster: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SkuMaster",
-      default: null,
-    },
-    unmappedReason: { type: String, default: null },
+    step: { type: String, required: true },
+    status: { type: String, enum: ['success', 'warning', 'error'], required: true },
+    message: { type: String, default: '' },
+    at: { type: Date, default: Date.now },
   },
-  { _id: false },
+  { _id: false }
 );
 
-const invoiceSchema = new mongoose.Schema(
+const matchAuditSchema = new mongoose.Schema(
   {
-    invoiceNumber: { type: String, required: true, trim: true },
-    poNumber: { type: String, required: true, trim: true, index: true },
-    invoiceDate: { type: Date, required: true },
-    items: [invoiceItemSchema],
-    rawParsed: { type: mongoose.Schema.Types.Mixed },
-    filePath: { type: String },
+    poNumber: { type: String, required: true, index: true, trim: true },
+    steps: [stepSchema],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-invoiceSchema.index({ poNumber: 1, invoiceNumber: 1 }, { unique: true });
-
-module.exports = mongoose.model("Invoice", invoiceSchema);
+module.exports = mongoose.model('MatchAudit', matchAuditSchema);
