@@ -1,25 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { AuthGuard } from './AuthGuard';
 import { AppShell } from '@/components/AppShell';
 import { TopTabs, TabKey } from '@/components/TopTabs';
 import { SummaryView } from '@/components/summary/SummaryView';
 import { UploadModal } from '@/components/upload/UploadModal';
-import { documentsApi } from '@/lib/api';
+import { DocumentDetailView } from '@/components/detail/DocumentDetailView';
+import { useDocumentsByPo } from '@/hooks/useDocuments';
 
 export default function Home() {
   const [poNumberInput, setPoNumberInput] = useState('CI4PO05788');
   const [activePoNumber, setActivePoNumber] = useState('CI4PO05788');
   const [activeTab, setActiveTab] = useState<TabKey>('po');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [activeSubTabId, setActiveSubTabId] = useState<string | null>(null);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['documents', activePoNumber],
-    queryFn: () => documentsApi.list({ poNumber: activePoNumber }),
-    enabled: !!activePoNumber,
-  });
+  const { data, isLoading, isError } = useDocumentsByPo(activePoNumber);
 
   const counts = {
     po: data?.po?.length || 0,
@@ -27,10 +24,66 @@ export default function Home() {
     delivery: data?.grn?.length || 0,
   };
 
+  // Reset sub-tab selection whenever the main tab or PO changes
+  useEffect(() => {
+    setActiveSubTabId(null);
+  }, [activeTab, activePoNumber]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setActivePoNumber(poNumberInput.trim());
   };
+
+  // Determine which sub-tab list applies (GRNs for delivery, Invoices for fulfillment)
+  const subTabDocs =
+    activeTab === 'delivery' ? data?.grn || [] : activeTab === 'fulfillment' ? data?.invoice || [] : [];
+
+  const activeSubDoc = subTabDocs.find((d: any) => d._id === activeSubTabId) || subTabDocs[0] || null;
+
+  const renderFormFields = () => {
+    if (activeTab === 'po') {
+      const po = data?.po?.[0];
+      if (!po) return [];
+      return [
+        { label: 'PO Number', value: po.poNumber },
+        { label: 'PO Date', value: po.poDate ? new Date(po.poDate).toLocaleDateString() : null },
+        { label: 'Vendor Name', value: po.vendorName },
+        { label: 'Items Count', value: po.items?.length },
+      ];
+    }
+    if (activeTab === 'delivery' && activeSubDoc) {
+      return [
+        { label: 'GRN Number', value: activeSubDoc.grnNumber },
+        { label: 'PO Number', value: activeSubDoc.poNumber },
+        { label: 'GRN Date', value: activeSubDoc.grnDate ? new Date(activeSubDoc.grnDate).toLocaleDateString() : null },
+        { label: 'Items Count', value: activeSubDoc.items?.length },
+      ];
+    }
+    if (activeTab === 'fulfillment' && activeSubDoc) {
+      return [
+        { label: 'Invoice Number', value: activeSubDoc.invoiceNumber },
+        { label: 'PO Number', value: activeSubDoc.poNumber },
+        { label: 'Invoice Date', value: activeSubDoc.invoiceDate ? new Date(activeSubDoc.invoiceDate).toLocaleDateString() : null },
+        { label: 'Items Count', value: activeSubDoc.items?.length },
+      ];
+    }
+    return [];
+  };
+
+  const formTitleMap: Record<string, string> = {
+    po: 'Purchase Order Details',
+    delivery: 'GRN Details',
+    fulfillment: 'Invoice Details',
+  };
+
+  const documentTypeMap: Record<string, 'po' | 'grn' | 'invoice'> = {
+    po: 'po',
+    delivery: 'grn',
+    fulfillment: 'invoice',
+  };
+
+  const activeDocumentId =
+    activeTab === 'po' ? data?.po?.[0]?._id : activeSubDoc?._id || null;
 
   return (
     <AuthGuard>
@@ -62,6 +115,32 @@ export default function Home() {
 
         <TopTabs activeTab={activeTab} onTabChange={setActiveTab} counts={counts} />
 
+        {/* Sub-tab pills for multiple GRNs/Invoices */}
+        {(activeTab === 'delivery' || activeTab === 'fulfillment') && subTabDocs.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto px-4 md:px-6 py-2 border-b border-cream-border bg-cream">
+            {subTabDocs.map((doc: any) => {
+              const label =
+                activeTab === 'delivery'
+                  ? `GRN: ${doc.grnNumber}`
+                  : `Invoice: ${doc.invoiceNumber}`;
+              const isActive = (activeSubDoc?._id || subTabDocs[0]?._id) === doc._id;
+              return (
+                <button
+                  key={doc._id}
+                  onClick={() => setActiveSubTabId(doc._id)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap border transition-colors ${
+                    isActive
+                      ? 'bg-accent text-white border-accent'
+                      : 'border-cream-border text-text-subtle hover:bg-cream-muted'
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         <div className="flex-1 p-4 md:p-6">
           {activeTab === 'summary' && <SummaryView poNumber={activePoNumber} />}
 
@@ -70,17 +149,29 @@ export default function Home() {
               {isLoading && <p className="text-text-muted text-sm">Loading...</p>}
               {isError && (
                 <p className="text-danger text-sm">
-                  Failed to load documents for PO "{activePoNumber}". Has it been uploaded yet?
+                  Failed to load documents for PO "{activePoNumber}".
                 </p>
               )}
-              {!isLoading && !isError && (
-                <div className="text-sm text-text-subtle">
-                  <p className="mb-2">
-                    Active tab: <span className="font-medium">{activeTab}</span>
-                  </p>
-                  <p>PO: {counts.po} | Invoices: {counts.fulfillment} | GRNs: {counts.delivery}</p>
-                </div>
+              {!isLoading && !isError && counts.po === 0 && activeTab === 'po' && (
+                <p className="text-text-muted text-sm">No PO uploaded yet for this PO number.</p>
               )}
+              {!isLoading && !isError && (activeTab === 'po' ? counts.po > 0 : subTabDocs.length > 0) && (
+                <DocumentDetailView
+                  poNumber={activePoNumber}
+                  documentType={documentTypeMap[activeTab]}
+                  documentId={activeDocumentId}
+                  formTitle={formTitleMap[activeTab]}
+                  formFields={renderFormFields()}
+                />
+              )}
+              {!isLoading &&
+                !isError &&
+                activeTab !== 'po' &&
+                subTabDocs.length === 0 && (
+                  <p className="text-text-muted text-sm">
+                    No {activeTab === 'delivery' ? 'GRNs' : 'Invoices'} uploaded yet for this PO number.
+                  </p>
+                )}
             </>
           )}
         </div>
