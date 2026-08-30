@@ -11,7 +11,10 @@ const MRP_TOLERANCE = 0.01; // ~1% per spec
  * if the item couldn't be resolved (never dropped, per spec).
  */
 function itemKey(item) {
-  if (item.skuMaster) return `sku:${item.skuMaster.toString()}`;
+  if (item.skuMaster) {
+    const id = item.skuMaster._id || item.skuMaster;
+    return `sku:${id.toString()}`;
+  }
   return `raw:${normalise(item.itemCode) || normalise(item.description)}`;
 }
 
@@ -179,9 +182,14 @@ async function computeMatch(poNumber) {
 
     itemResults.push({
       itemKey: key,
-      description:
-        poItem?.description || grnItem?.description || invItem?.description,
+      description: poItem?.description || grnItem?.description || invItem?.description,
       skuMasterId: skuMaster?._id || skuMaster || null,
+      skuId: skuMaster?.skuErpCode || null,
+      mappedSkuName: skuMaster?.name || null,
+      erpCode: skuMaster?.skuErpCode || null,
+      eanCode: skuMaster?.eanCode || null,
+      hsnCode: skuMaster?.hsnCode || null,
+      uom: skuMaster?.uom || null,
       poQty,
       grnQty,
       invoiceQty: invQty,
@@ -189,6 +197,7 @@ async function computeMatch(poNumber) {
       agreedRate: skuMaster?.agreedRate ?? null,
       mrp: observedMrp ?? null,
       masterMrp: skuMaster?.mrp ?? null,
+      grossAmount: invItem?.unitRate != null ? invQty * invItem.unitRate : null,
       reasons: itemLevelReasons[key] || [],
     });
   }

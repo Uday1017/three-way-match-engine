@@ -5,7 +5,6 @@ import { DocumentForm } from "./DocumentForm";
 import { FilePreview } from "./FilePreview";
 import { ItemGrid } from "./ItemGrid";
 import { MismatchBanner } from "./MismatchBanner";
-import { documentsApi } from "@/lib/api";
 
 interface DocumentDetailViewProps {
   poNumber: string;
@@ -30,15 +29,13 @@ export function DocumentDetailView({
     return <p className="text-danger text-sm">Failed to load match data.</p>;
   if (!match) return null;
 
-  const fileUrl = documentId ? documentsApi.getFileUrl(documentId) : null;
-
   return (
     <div className="space-y-4">
       <MismatchBanner status={match.status} reasons={match.reasons || []} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <DocumentForm title={formTitle} fields={formFields} />
-        <FilePreview fileUrl={fileUrl} />
+        <FilePreview documentId={documentId} />
       </div>
 
       <div>

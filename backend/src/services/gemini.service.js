@@ -2,7 +2,7 @@ const { GoogleGenAI } = require("@google/genai");
 const fs = require("fs");
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const MODEL_NAME = "gemini-flash-latest";
+const MODEL_NAME = "gemini-3.5-flash-lite";
 
 const PROMPTS = {
   po: `You are a document parser. Extract structured data from this Purchase Order (PO) document.
@@ -158,14 +158,15 @@ async function callGemini(filePath, mimeType, documentType) {
     ],
   });
 
-  const responseText = response.text;
+    const responseText = response.text;
+    const cleaned = stripCodeFences(responseText);
 
-  let parsed;
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch (err) {
-    throw new Error(`Gemini returned malformed JSON: ${err.message}`);
-  }
+    let parsed;
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch (err) {
+      throw new Error(`Gemini returned malformed JSON: ${err.message}`);
+    }
 
   return parsed;
 }

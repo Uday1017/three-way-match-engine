@@ -63,6 +63,12 @@ export const documentsApi = {
     return res.data;
   },
   getFileUrl: (id: string) => `${API_BASE_URL}/documents/${id}/file`,
+  getFileBlob: async (id: string): Promise<{ url: string; mimeType: string }> => {
+    const res = await apiClient.get(`/documents/${id}/file`, { responseType: "blob" });
+    const mimeType = String(res.headers["content-type"] || "application/pdf");
+    const url = URL.createObjectURL(res.data);
+    return { url, mimeType };
+  },
 };
 
 export const mastersApi = {
