@@ -1,0 +1,243 @@
+{
+  "info": {
+    "name": "Three-Way Match Engine",
+    "description": "API collection for the Three-Way Match Engine assignment — PO/GRN/Invoice reconciliation via Gemini extraction, SKU Master resolution, and live-recomputed matching.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5050", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "poNumber", "value": "CI4PO05788", "type": "string" },
+    { "key": "documentId", "value": "", "type": "string" },
+    { "key": "skuId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "documentType", "value": "po", "type": "text" },
+                { "key": "file", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/documents/upload", "host": ["{{baseUrl}}"], "path": ["documents", "upload"] },
+            "description": "documentType must be one of: po, grn, invoice"
+          }
+        },
+        {
+          "name": "Get Document by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Document File (preview)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{documentId}}/file",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{documentId}}", "file"]
+            }
+          }
+        },
+        {
+          "name": "List Documents by PO Number",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/documents?poNumber={{poNumber}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"],
+              "query": [{ "key": "poNumber", "value": "{{poNumber}}" }]
+            }
+          }
+        },
+        {
+          "name": "List Documents by Type",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/documents?type=po",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"],
+              "query": [{ "key": "type", "value": "po" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Match & Summary",
+      "item": [
+        {
+          "name": "Get Match Result",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/match/{{poNumber}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["match", "{{poNumber}}"]
+            },
+            "description": "Always recomputes live from current stored documents — never cached."
+          }
+        },
+        {
+          "name": "Get Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/summary/{{poNumber}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["summary", "{{poNumber}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SKU Master",
+      "item": [
+        {
+          "name": "List All SKU Masters",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/masters/sku", "host": ["{{baseUrl}}"], "path": ["masters", "sku"] }
+          }
+        },
+        {
+          "name": "Get SKU Master by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/masters/sku/{{skuId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["masters", "sku", "{{skuId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create SKU Master",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('skuId', json._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skuErpCode\": \"99999\",\n  \"name\": \"Test Product 500g\",\n  \"eanCode\": null,\n  \"hsnCode\": \"19022010\",\n  \"uom\": \"PKT\",\n  \"agreedRate\": 150.5,\n  \"mrp\": 199.0,\n  \"priceTolerance\": 0.05,\n  \"aliases\": [\n    { \"source\": \"grn\", \"code\": \"99999\" },\n    { \"source\": \"invoice\", \"code\": \"FG-TEST-0001\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/masters/sku", "host": ["{{baseUrl}}"], "path": ["masters", "sku"] }
+          }
+        },
+        {
+          "name": "Update SKU Master",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agreedRate\": 155.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/masters/sku/{{skuId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["masters", "sku", "{{skuId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete SKU Master",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/masters/sku/{{skuId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["masters", "sku", "{{skuId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          }
+        }
+      ]
+    }
+  ]
+}
