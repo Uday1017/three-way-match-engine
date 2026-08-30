@@ -1,0 +1,287 @@
+{
+  "poNumber": "CI4PO05788",
+  "poDate": "2026-03-17",
+  "vendorName": "M/s AFP",
+  "items": [
+    {
+      "itemCode": "11423",
+      "description": "Cheesy Spicy Veg Momos 24.0 Pieces",
+      "quantity": 50,
+      "unitBaseCost": 220.762,
+      "mrp": 305
+    },
+    {
+      "itemCode": "11797",
+      "description": "Meatigo Hot Wings 250.0 g",
+      "quantity": 75,
+      "unitBaseCost": 126.667,
+      "mrp": 175
+    },
+    {
+      "itemCode": "18003",
+      "description": "Meatigo Chicken Curry Cut Skinless Frozen 450.0 g",
+      "quantity": 120,
+      "unitBaseCost": 141.143,
+      "mrp": 195
+    },
+    {
+      "itemCode": "18004",
+      "description": "Meatigo Chicken Boneless Breast Frozen 450.0 g",
+      "quantity": 540,
+      "unitBaseCost": 199.048,
+      "mrp": 275
+    },
+    {
+      "itemCode": "18906",
+      "description": "Spring Rolls Veg Frozen 240.0 g",
+      "quantity": 175,
+      "unitBaseCost": 123.048,
+      "mrp": 170
+    },
+    {
+      "itemCode": "253430",
+      "description": "Pork Salami 200.0 g",
+      "quantity": 75,
+      "unitBaseCost": 188.19,
+      "mrp": 260
+    },
+    {
+      "itemCode": "33387",
+      "description": "Frozen Chicken Chilli Salami 200.0 g",
+      "quantity": 75,
+      "unitBaseCost": 126.667,
+      "mrp": 175
+    },
+    {
+      "itemCode": "33388",
+      "description": "Frozen Chicken Pepperoni Salami 100.0 g",
+      "quantity": 120,
+      "unitBaseCost": 108.571,
+      "mrp": 150
+    },
+    {
+      "itemCode": "33390",
+      "description": "Chicken Seekh Kebab 500.0 g",
+      "quantity": 272,
+      "unitBaseCost": 228,
+      "mrp": 315
+    },
+    {
+      "itemCode": "398656",
+      "description": "Meatigo Chicken Drumsticks 450.0 g",
+      "quantity": 270,
+      "unitBaseCost": 188.19,
+      "mrp": 260
+    },
+    {
+      "itemCode": "414867",
+      "description": "Chinese Veg Spring Rolls 240.0 g",
+      "quantity": 25,
+      "unitBaseCost": 119.429,
+      "mrp": 165
+    },
+    {
+      "itemCode": "432518",
+      "description": "Meatigo Chicken Kheema 450.0 g",
+      "quantity": 360,
+      "unitBaseCost": 199.048,
+      "mrp": 275
+    },
+    {
+      "itemCode": "4459",
+      "description": "Original Chicken Momos 24.0 Pieces",
+      "quantity": 475,
+      "unitBaseCost": 220.762,
+      "mrp": 305
+    },
+    {
+      "itemCode": "4460",
+      "description": "Spicy Chicken Momos 24.0 Pieces",
+      "quantity": 325,
+      "unitBaseCost": 220.762,
+      "mrp": 305
+    },
+    {
+      "itemCode": "4461",
+      "description": "Veg & Paneer Momos 24.0 Pieces",
+      "quantity": 75,
+      "unitBaseCost": 202.667,
+      "mrp": 280
+    },
+    {
+      "itemCode": "453259",
+      "description": "Chicken Cheese & Onion Sausage 250.0 g",
+      "quantity": 40,
+      "unitBaseCost": 144.762,
+      "mrp": 200
+    },
+    {
+      "itemCode": "4694",
+      "description": "Original Chicken Momos 10.0 Pieces",
+      "quantity": 450,
+      "unitBaseCost": 133.905,
+      "mrp": 185
+    },
+    {
+      "itemCode": "4695",
+      "description": "Spicy Chicken Momos 10.0 Pieces",
+      "quantity": 100,
+      "unitBaseCost": 133.905,
+      "mrp": 185
+    },
+    {
+      "itemCode": "4697",
+      "description": "Veg & Paneer Momos 10.0 Pieces",
+      "quantity": 400,
+      "unitBaseCost": 112.19,
+      "mrp": 155
+    },
+    {
+      "itemCode": "469735",
+      "description": "Meatigo Everyday Chicken Breast (Frozen) 150.0 g",
+      "quantity": 90,
+      "unitBaseCost": 119.429,
+      "mrp": 165
+    },
+    {
+      "itemCode": "4698",
+      "description": "Chicken Ham 200.0 g",
+      "quantity": 150,
+      "unitBaseCost": 133.905,
+      "mrp": 185
+    },
+    {
+      "itemCode": "4699",
+      "description": "Pork Sausage 250.0 g",
+      "quantity": 40,
+      "unitBaseCost": 170.095,
+      "mrp": 235
+    },
+    {
+      "itemCode": "4700",
+      "description": "Pork Ham 200.0 g",
+      "quantity": 50,
+      "unitBaseCost": 177.333,
+      "mrp": 245
+    },
+    {
+      "itemCode": "4701",
+      "description": "Pork Breakfast Bacon 300.0 g",
+      "quantity": 20,
+      "unitBaseCost": 267.81,
+      "mrp": 370
+    },
+    {
+      "itemCode": "470663",
+      "description": "Whole Wheat Momos - Veg & Paneer 330.0 g",
+      "quantity": 80,
+      "unitBaseCost": 162.857,
+      "mrp": 225
+    },
+    {
+      "itemCode": "489632",
+      "description": "Tandoori Momos - Chicken 280.0 g",
+      "quantity": 35,
+      "unitBaseCost": 159.238,
+      "mrp": 220
+    },
+    {
+      "itemCode": "49168",
+      "description": "Peri Peri Veg Momos 15.0 Pieces",
+      "quantity": 80,
+      "unitBaseCost": 88.667,
+      "mrp": 245
+    },
+    {
+      "itemCode": "498695",
+      "description": "Chicken Salami 200.0 g",
+      "quantity": 25,
+      "unitBaseCost": 137.524,
+      "mrp": 190
+    },
+    {
+      "itemCode": "526303",
+      "description": "Chicken Pepper & Herb Sausage 250.0 g",
+      "quantity": 20,
+      "unitBaseCost": 141.143,
+      "mrp": 195
+    },
+    {
+      "itemCode": "598770",
+      "description": "Pork Breakfast Bacon 150.0 g",
+      "quantity": 36,
+      "unitBaseCost": 152,
+      "mrp": 210
+    },
+    {
+      "itemCode": "6664",
+      "description": "Chicken Sausages 250.0 g",
+      "quantity": 380,
+      "unitBaseCost": 130.286,
+      "mrp": 180
+    },
+    {
+      "itemCode": "6665",
+      "description": "Chicken Cheese & Chilli Sausages 250.0 g",
+      "quantity": 100,
+      "unitBaseCost": 133.905,
+      "mrp": 185
+    },
+    {
+      "itemCode": "730016",
+      "description": "Whole Wheat Chicken Momos 330.0 g",
+      "quantity": 80,
+      "unitBaseCost": 170.095,
+      "mrp": 235
+    },
+    {
+      "itemCode": "750414",
+      "description": "Super Saver Chicken Momo Pack (Chef Momos) 1.0 kg",
+      "quantity": 72,
+      "unitBaseCost": 247.619,
+      "mrp": 650
+    },
+    {
+      "itemCode": "755774",
+      "description": "Chicken & Cheese Momos 540.0 g",
+      "quantity": 25,
+      "unitBaseCost": 238.857,
+      "mrp": 330
+    },
+    {
+      "itemCode": "790919",
+      "description": "Meatigo Everyday Fish Fillet 200.0 g",
+      "quantity": 30,
+      "unitBaseCost": 188.19,
+      "mrp": 260
+    },
+    {
+      "itemCode": "81521",
+      "description": "Peri Peri Chicken Momos 250.0 g",
+      "quantity": 640,
+      "unitBaseCost": 72.019,
+      "mrp": 199
+    },
+    {
+      "itemCode": "89201",
+      "description": "Chicken English Breakfast Sausage 1.0 kg",
+      "quantity": 162,
+      "unitBaseCost": 222.857,
+      "mrp": 585
+    },
+    {
+      "itemCode": "205950",
+      "description": "Frozen Pork Pepperoni Salami 100.0 g",
+      "quantity": 40,
+      "unitBaseCost": 133.905,
+      "mrp": 185
+    },
+    {
+      "itemCode": "507809",
+      "description": "Pizza Minis - Chicken Tikka 180.0 g",
+      "quantity": 50,
+      "unitBaseCost": 115.086,
+      "mrp": 159
+    }
+  ]
+}

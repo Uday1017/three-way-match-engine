@@ -1,0 +1,26 @@
+{
+    "poNumber": "CI4PO05788",
+    "status": "mismatch",
+    "stats": {
+        "poAmount": 995278.75,
+        "totalInvoiced": 743263.69,
+        "totalReceived": 743263.22
+    },
+    "rows": [
+        {
+            "type": "GRN",
+            "documentId": "6a93c47adae2f58412117a11"
+        },
+        {
+            "type": "Invoice",
+            "documentId": "6a93c4a5dae2f58412117b2a"
+        },
+        {
+            "type": "Current Status",
+            "status": "mismatch",
+            "cumulativeInvoicedQty": 4705,
+            "cumulativeReceivedQty": 4705,
+            "pendingDeliveryQty": 1522
+        }
+    ]
+}
